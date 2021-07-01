@@ -246,8 +246,15 @@ public class ItemGun extends BaseItem {
     public void fireClient(EntityPlayer entityPlayer, World world, ItemStack gunStack, ItemGun itemGun, WeaponFireMode fireMode) {
         GunType gunType = itemGun.type;
 
+        // Flash light attachment allow sprint fire
+        boolean canSprintFire = type.allowSprintFiring;
+        if (GunType.getAttachment(entityPlayer.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), AttachmentEnum.Flashlight) != null) {
+            if (((ItemAttachment) GunType.getAttachment(entityPlayer.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), AttachmentEnum.Flashlight).getItem()).type.flashLight.allowSprint != null) {
+                canSprintFire = ((ItemAttachment) GunType.getAttachment(entityPlayer.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), AttachmentEnum.Flashlight).getItem()).type.flashLight.allowSprint;
+            }
+        }
         // Can fire checks
-        if (isOnShootCooldown(entityPlayer.getUniqueID()) || isClientReloading(entityPlayer) || ClientRenderHooks.getAnimMachine(entityPlayer).attachmentMode || (!type.allowSprintFiring && entityPlayer.isSprinting()) || !itemGun.type.hasFireMode(fireMode))
+        if (isOnShootCooldown(entityPlayer.getUniqueID()) || isClientReloading(entityPlayer) || ClientRenderHooks.getAnimMachine(entityPlayer).attachmentMode || (!canSprintFire && entityPlayer.isSprinting()) || !itemGun.type.hasFireMode(fireMode))
             return;
 
         int shotCount = fireMode == WeaponFireMode.BURST ? gunStack.getTagCompound().getInteger("shotsremaining") > 0 ? gunStack.getTagCompound().getInteger("shotsremaining") : gunType.numBurstRounds : 1;
@@ -312,7 +319,15 @@ public class ItemGun extends BaseItem {
         // Can fire checks
         if (isValidShoot(clientFireTickDelay, recoilPitch, recoilYaw, recoilAimReducer, bulletSpread, type)) {
 
-            if (isServerReloading(entityPlayer) || (!type.allowSprintFiring && entityPlayer.isSprinting()) || !itemGun.type.hasFireMode(fireMode))
+            // Flash light attachment allow sprint fire
+            boolean canSprintFire = type.allowSprintFiring;
+            if (GunType.getAttachment(entityPlayer.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), AttachmentEnum.Flashlight) != null) {
+                if (((ItemAttachment) GunType.getAttachment(entityPlayer.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), AttachmentEnum.Flashlight).getItem()).type.flashLight.allowSprint != null) {
+                    canSprintFire = ((ItemAttachment) GunType.getAttachment(entityPlayer.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), AttachmentEnum.Flashlight).getItem()).type.flashLight.allowSprint;
+                }
+            }
+            
+            if (isServerReloading(entityPlayer) || (!canSprintFire && entityPlayer.isSprinting()) || !itemGun.type.hasFireMode(fireMode))
                 return;
 
             // Weapon pre fire event

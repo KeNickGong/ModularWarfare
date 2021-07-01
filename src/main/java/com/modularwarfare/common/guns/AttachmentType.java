@@ -15,6 +15,8 @@ public class AttachmentType extends BaseType {
 
     public Sight sight = new Sight();
 
+    public FlashLight flashLight = new FlashLight();
+
     @Override
     public void loadExtraValues() {
         if (maxStackSize == null)
@@ -50,6 +52,10 @@ public class AttachmentType extends BaseType {
     public static class Grip {
         public float recoilPitchFactor = 1.0f;
         public float recoilYawFactor = 1.0f;
+    }
+
+    public static class FlashLight {
+        public Boolean allowSprint;
     }
 
 }
