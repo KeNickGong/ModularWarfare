@@ -2,6 +2,7 @@
     "internalName": "prototype.tactical_vest_lv2_green",
     "defense": "0.25",
     "durability": 500,
+    "moveSpeedModifier": 1.0,
     "armorTypes": 
     {
         "vest":

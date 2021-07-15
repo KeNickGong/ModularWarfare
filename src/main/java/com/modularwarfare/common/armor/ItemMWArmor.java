@@ -1,5 +1,6 @@
 package com.modularwarfare.common.armor;
 
+import com.google.common.collect.Multimap;
 import com.modularwarfare.ModularWarfare;
 import com.modularwarfare.api.MWArmorType;
 import com.modularwarfare.client.model.ModelCustomArmor;
@@ -9,6 +10,8 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
@@ -20,12 +23,16 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 public class ItemMWArmor extends ItemArmor implements ISpecialArmor {
     public ArmorType type;
     public BaseType baseType;
     public String internalName;
+    
+    protected static final UUID MOVEMENT_SPEED_MODIFIER = UUID.randomUUID();
 
     public ItemMWArmor(final ArmorType type, final MWArmorType armorSlot) {
         super(ItemArmor.ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.fromString(armorSlot.name().toLowerCase()));
@@ -64,6 +71,15 @@ public class ItemMWArmor extends ItemArmor implements ISpecialArmor {
         int skinId = stack.getTagCompound().getInteger("skinId");
         String path = skinId > 0 ? "skins/" + type.modelSkins[skinId].getSkin() : type.modelSkins[0].getSkin();
         return ModularWarfare.MOD_ID + ":skins/armor/" + path + ".png";
+    }
+
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+        if (slot == EntityEquipmentSlot.MAINHAND) {
+            multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(MOVEMENT_SPEED_MODIFIER, "MovementSpeed", type.moveSpeedModifier - 1.0f, 2));
+        }
+        return multimap;
     }
 
     @Override

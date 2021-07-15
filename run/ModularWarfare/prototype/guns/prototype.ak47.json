@@ -17,7 +17,7 @@
     "bulletSpread": 1.0,
 
     "accuracySneakFactor": 0.5,
-    "moveSpeedModifier": 1.0,
+    "moveSpeedModifier": 2.0,
     "allowSprintFiring": true,
 
     "fireModes": ["full", "semi"],

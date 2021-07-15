@@ -1,7 +1,8 @@
 {
     "internalName": "prototype.military_cap_black",
-  "defense": "0.08",
+    "defense": "0.08",
     "durability": 500,
+    "moveSpeedModifier": 1.0,
     "armorTypes": 
     {
         "head":

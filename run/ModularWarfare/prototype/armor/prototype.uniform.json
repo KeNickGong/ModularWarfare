@@ -2,6 +2,7 @@
     "internalName": "prototype.uniform",
     "defense": "0.1",
     "durability": 500,
+    "moveSpeedModifier": 2.0,
     "armorTypes": 
     {
         "chest": 
