@@ -2,7 +2,6 @@
     "internalName": "prototype.vest",
     "defense": "0.15",
     "durability": 500,
-    "moveSpeedModifier": 1.0,
     "armorTypes": 
     {
         "vest":

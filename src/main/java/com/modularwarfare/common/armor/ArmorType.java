@@ -15,7 +15,6 @@ import java.util.HashMap;
 public class ArmorType extends BaseType {
     public Integer durability;
     public double defense;
-    public float moveSpeedModifier = 1F;
     public HashMap<MWArmorType, ArmorInfo> armorTypes;
 
     public ArmorType() {
